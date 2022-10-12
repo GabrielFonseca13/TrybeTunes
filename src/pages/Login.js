@@ -46,6 +46,7 @@ class Login extends React.Component {
     const { userName, btnDisabled, loading } = this.state;
     return (
       <div data-testid="page-login">
+        <h1>TRYBETUNES</h1>
         <form action="">
           <label htmlFor="name">
             Name:
