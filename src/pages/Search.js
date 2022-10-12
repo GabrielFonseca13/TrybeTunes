@@ -16,7 +16,7 @@ class Search extends React.Component {
   };
 
   buttonValidation = () => {
-    const { bandArtist, btnDisabled } = this.state;
+    const { bandArtist } = this.state;
     const minArtistSize = 2;
     if (bandArtist.length >= minArtistSize) {
       this.setState({
