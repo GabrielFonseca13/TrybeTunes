@@ -1,26 +1,32 @@
-// import React from 'react';
-// import Header from './Header';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-// class MusicCard extends React.Component {
-//   render() {
-//     const { tracks } = this.props;
-//     return (
-//       <div>
-//         <Header />
-//         <h1>MusicCard</h1>
-//         <div>
-//           <ul>
-//             {tracks.map((music, index) => (
-//               <li key={ index }>
-//                 <img src={ music.artworkUrl100 } alt="" />
-//                 <h3 data-testid="album-name">{music.collectionName}</h3>
-//               </li>
-//             ))}
-//           </ul>
-//         </div>
-//       </div>
-//     );
-//   }
-// }
+class MusicCard extends React.Component {
+  render() {
+    const { musics } = this.props;
+    console.log(musics);
+    return (
+      <div>
+        <p>{musics.trackName}</p>
+        <audio data-testid="audio-component" src={ musics.previewUrl } controls>
+          <track kind="captions" />
+          O seu navegador não suporta o elemento
+          {' '}
+          {' '}
+          <code>audio</code>
+          .
+        </audio>
 
-// export default MusicCard;
+      </div>
+    );
+  }
+}
+
+MusicCard.propTypes = {
+  musics: PropTypes.shape({
+    trackName: PropTypes.string,
+    previewUrl: PropTypes.string,
+  }).isRequired,
+};
+
+export default MusicCard;

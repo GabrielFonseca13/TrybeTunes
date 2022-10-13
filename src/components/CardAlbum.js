@@ -21,7 +21,12 @@ class CardAlbum extends React.Component {
                 <Link
                   to={ `/album/${album.collectionId}` }
                   data-testid={ `link-to-album-${album.collectionId}` }
-                />
+                >
+                  {' '}
+                  Link para Album
+                  {' '}
+
+                </Link>
               </div>
             </div>
           ))}
