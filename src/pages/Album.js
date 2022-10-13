@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import getMusics from '../services/musicsAPI';
-import { addSong } from '../services/favoriteSongsAPI';
+import { addSong, getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
 import Loading from './Loading';
 
 import MusicCard from '../components/MusicCard';
@@ -16,18 +16,45 @@ class Album extends React.Component {
 
   componentDidMount() {
     this.response();
+    this.updateFav();
   }
 
-  handleAddFavorite = async ({ target }) => {
-    const { favMusics, tracks } = this.state;
+  updateFav = async () => {
+    this.setState({
+      favMusics: await getFavoriteSongs(),
+    });
+  };
+
+  ifChecked = (music) => {
+    const { favMusics } = this.state;
+    console.log('favMusics: ', favMusics);
+
+    const validateFav = favMusics.some((song) => music.trackId === song.trackId);
+    return validateFav;
+  };
+
+  handleAddFavorite = async (music) => {
+    const { favMusics } = this.state;
+    const validateFav = favMusics.some((song) => music.trackId === song.trackId);
+
     this.setState({
       loading: true,
-      favMusics: [...favMusics, target.value],
     });
-    await addSong(tracks);
-    this.setState({
-      loading: false,
-    });
+    if (validateFav) {
+      console.log('if remove');
+      await removeSong(music);
+      this.setState({
+        loading: false,
+        favMusics: await getFavoriteSongs(),
+      });
+    } else {
+      console.log('if add');
+      await addSong(music);
+      this.setState({
+        favMusics: await getFavoriteSongs(),
+        loading: false,
+      });
+    }
   };
 
   response = async () => {
@@ -40,8 +67,8 @@ class Album extends React.Component {
   };
 
   render() {
-    const { tracks, favMusics, loading } = this.state;
-    console.log(favMusics);
+    const { tracks, loading } = this.state;
+    // console.log(favMusics);
     return (
       <div data-testid="page-album">
         <Header />
@@ -66,7 +93,8 @@ class Album extends React.Component {
                 <li key={ index }>
                   <MusicCard
                     musics={ music }
-                    handleAddFavorite={ this.handleAddFavorite }
+                    handleAddFavorite={ () => this.handleAddFavorite(music) }
+                    ifChecked={ this.ifChecked(music) }
                   />
                 </li>
               )
