@@ -43,3 +43,5 @@ MusicCard.propTypes = {
 };
 
 export default MusicCard;
+
+// Requisitos resolvidos com a ajuda da Ligia Bicalho;
